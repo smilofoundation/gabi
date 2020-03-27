@@ -29,12 +29,12 @@ func NewIssuer(sk *PrivateKey, pk *PublicKey, context *big.Int) *Issuer {
 // the proofs containted in the IssueCommitmentMessage! That needs to be done at
 // a higher level!
 func (i *Issuer) IssueSignature(U *big.Int, attributes []*big.Int, witness *revocation.Witness, nonce2 *big.Int, blind []int) (*IssueSignatureMessage, error) {
-	signature, mDoublePrimes, err := i.signCommitmentAndAttributes(U, attributes, blind)
+	signature, mIssuer, err := i.signCommitmentAndAttributes(U, attributes, blind)
 	if err != nil {
 		return nil, err
 	}
 	proof := i.proveSignature(signature, nonce2)
-	return &IssueSignatureMessage{Signature: signature, Proof: proof, NonRevocationWitness: witness, MDoublePrimes: mDoublePrimes}, nil
+	return &IssueSignatureMessage{Signature: signature, Proof: proof, NonRevocationWitness: witness, MIssuer: mIssuer}, nil
 }
 
 // signCommitmentAndAttributes produces a (partial) signature on the commitment
